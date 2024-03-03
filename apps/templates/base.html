@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Статистика экспериментов</title>
+    <!-- Подключение стилей Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.0/css/bootstrap.min.css">
+    {% block styles %}{% endblock styles %}
+</head>
+<body>
+    {% include 'include/header.html' %}
+
+    <br>
+
+    {% block content %}
+    {% endblock content %}
+
+    <br>
+
+    {% include 'include/footer.html' %}
+    <!-- Подключение скриптов Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    {% block scripts %}{% endblock scripts %}
+</body>
+</html>

@@ -1,3 +1,5 @@
+import os
+
 from fastapi import APIRouter, HTTPException, Request, status
 from fastapi.templating import Jinja2Templates
 
@@ -5,7 +7,11 @@ from apps.src.schemas import HTTPError
 
 router = APIRouter(prefix="/pages", tags=["Pages"])
 
-templates = Jinja2Templates(directory="templates")
+_apps_dir = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), os.path.pardir, os.path.pardir)
+)
+
+templates = Jinja2Templates(directory=os.path.join(_apps_dir, "templates"))
 
 
 @router.get(
@@ -24,6 +30,8 @@ templates = Jinja2Templates(directory="templates")
 )
 def get_experiment_stats_handler(request: Request):
     try:
-        return templates.TemplateResponse("base.html", {"request": request})
+        return templates.TemplateResponse(
+            request=request, name="experiment-stats.html", context={"id": id}
+        )
     except Exception:
         raise HTTPException(status_code=500, detail="Error at the controller layer.")

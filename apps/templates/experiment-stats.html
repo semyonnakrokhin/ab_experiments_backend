@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-5">Статистика экспериментов</h1>
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th scope="col">Название эксперимента</th>
+                <th scope="col">Общее количество участвующих устройств</th>
+                <th scope="col">Распределение между опциями</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Эксперимент 1</td>
+                <td>100</td>
+                <td>Опция 1: 30%, Опция 2: 40%, Опция 3: 30%</td>
+            </tr>
+            <tr>
+                <td>Эксперимент 2</td>
+                <td>150</td>
+                <td>Опция 1: 50%, Опция 2: 25%, Опция 3: 25%</td>
+            </tr>
+            <!-- Добавьте дополнительные строки, если нужно -->
+        </tbody>
+    </table>
+</div>
+{% endblock %}
