@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+#  nginx:
+#    build: ./nginx
+#    ports:
+#      - 1337:80
+#    depends_on:
+#      - fastapi_app
+#    networks:
+#      - semyon-network
+
+  fastapi_app:
+    build: ./apps
+    env_file:
+      - ./apps/.env
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8000:8000
+    networks:
+      - semyon-network
+    command:
+      - sh
+      - -c
+      - |
+        uvicorn apps.src.main:app --reload --host 0.0.0.0 --port 8000
+#        alembic -c /my_project/apps/alembic.ini upgrade head
+
+  db:
+    image: postgres:14.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env.postgres
+    ports:
+      - 5433:5432
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "ab_exp_db", "-U", "ab_exp_user" ]
+    networks:
+      - semyon-network
+
+#  cache:
+#    image: redis:6.2-alpine
+#    restart: always
+#    ports:
+#      - 6379:6379
+#    networks:
+#      - semyon-network
+
+volumes:
+  postgres_data:
+networks:
+  semyon-network:
+    driver: bridge

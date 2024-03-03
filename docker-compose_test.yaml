@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  fastapi_app:
+    build: ./apps
+    env_file:
+      - ./apps/.env
+      - ./apps/.env.test
+    depends_on: ["db"]
+    ports:
+      - 8000:8000
+    networks:
+      - semyon-network
+    command:
+      - sh
+      - -c
+      - |
+        pytest -v --asyncio-mode=auto ./tests/
+
+  db:
+    image: postgres:14.0-alpine
+    env_file:
+      - ./.env.postgres.test
+    ports:
+      - 5433:5432
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "ab_exp_db", "-U", "ab_exp_user" ]
+    networks:
+      - semyon-network
+
+#  cache:
+#    image: redis:6.2-alpine
+#    restart: always
+#    ports:
+#      - 6379:6379
+#    networks:
+#      - semyon-network
+
+networks:
+  semyon-network:
+    driver: bridge
