@@ -24,7 +24,7 @@ services:
       - sh
       - -c
       - |
-        uvicorn apps.src.main:app --reload --host 0.0.0.0 --port 8000
+        uvicorn apps.src.main:fastapi_app --reload --host 0.0.0.0 --port 8000
 #        alembic -c /my_project/apps/alembic.ini upgrade head
 
   worker-button:

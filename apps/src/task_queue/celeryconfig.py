@@ -12,6 +12,7 @@ accept_content = ["pickle", "json"]
 result_expires = 200
 result_persistent = False
 worker_send_task_events = False
+broker_connection_retry_on_startup = True
 worker_prefetch_multiplier = 4
 
 # Set queues config
