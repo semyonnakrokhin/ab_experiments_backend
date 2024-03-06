@@ -5,7 +5,7 @@ import pytest
 from httpx import AsyncClient
 
 from apps.src.db_service.config import DatabaseSettings
-from apps.src.main import app
+from apps.src.main import fastapi_app
 
 
 @pytest.fixture(scope="session")
@@ -18,7 +18,7 @@ def event_loop(request):
 
 @pytest.fixture(scope="session")
 def container():
-    container = app.container
+    container = fastapi_app.container
 
     return container
 
@@ -37,5 +37,5 @@ async def setup_db(database_test):
 
 @pytest.fixture(scope="session")
 async def async_client() -> AsyncGenerator[AsyncClient, None]:
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=fastapi_app, base_url="http://test") as ac:
         yield ac

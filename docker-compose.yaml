@@ -14,9 +14,8 @@ services:
     build: ./apps
     env_file:
       - ./apps/.env
-    depends_on:
-      db:
-        condition: service_healthy
+      - ./apps/.env.celery
+    depends_on: [ "db", "worker-button", "worker-price", "rabbitmq", "redis", "redis-commander" ]
     ports:
       - 8000:8000
     networks:
@@ -27,6 +26,26 @@ services:
       - |
         uvicorn apps.src.main:app --reload --host 0.0.0.0 --port 8000
 #        alembic -c /my_project/apps/alembic.ini upgrade head
+
+  worker-button:
+    build: ./apps
+    env_file:
+      - ./apps/.env
+      - ./apps/.env.celery
+    depends_on: [ "db", "rabbitmq", "redis", "redis-commander" ]
+    networks:
+      - semyon-network
+    command: celery -A apps.src.main:celery_app worker -Q button --loglevel=INFO --hostname=button@%h
+
+  worker-price:
+    build: ./apps
+    env_file:
+      - ./apps/.env
+      - ./apps/.env.celery
+    depends_on: [ "db", "rabbitmq", "redis", "redis-commander" ]
+    networks:
+      - semyon-network
+    command: celery -A apps.src.main:celery_app worker -Q price --loglevel=INFO --hostname=price@%h
 
   db:
     image: postgres:14.0-alpine
@@ -41,16 +60,43 @@ services:
     networks:
       - semyon-network
 
-#  cache:
-#    image: redis:6.2-alpine
-#    restart: always
-#    ports:
-#      - 6379:6379
-#    networks:
-#      - semyon-network
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - semyon-network
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - semyon-network
+
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: ghcr.io/joeferner/redis-commander:latest
+    restart: always
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOSTS=local:cache:6379
+    ports:
+      - "8081:8081"
+    networks:
+      - semyon-network
+
 
 volumes:
   postgres_data:
+  rabbitmq_data:
 networks:
   semyon-network:
     driver: bridge
