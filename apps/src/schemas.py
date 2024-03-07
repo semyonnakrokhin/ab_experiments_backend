@@ -20,8 +20,3 @@ class CustomModel(BaseModel):
 
 class HTTPError(CustomModel):
     detail: str
-
-    class Config:
-        schema_extra = {
-            "example": {"detail": "HTTPException raised."},
-        }
