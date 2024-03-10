@@ -7,6 +7,18 @@ DB_PASS=qwerty
 DB_NAME=ab_exp_db
 
 
+[./apps/.env.celery]
+BROKER__TRANSPORT=amqp
+BROKER__USERID=guest
+BROKER__HOSTNAME=rabbitmq
+BROKER__PORT=5672
+
+RESULT_BACKEND__DB=redis
+RESULT_BACKEND__HOST=redis
+RESULT_BACKEND__PORT=6379
+RESULT_BACKEND__DBNAME=1
+
+
 [./apps/.env.test]
 MODE=TEST
 DB_HOST=db
