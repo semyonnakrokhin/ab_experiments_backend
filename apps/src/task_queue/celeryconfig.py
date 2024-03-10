@@ -6,12 +6,13 @@ broker_url = celery_settings.broker.broker_url
 result_backend = celery_settings.result_backend.result_backend_url
 
 task_track_started = True
+worker_pool = "solo"
 task_serializer = "json"
 result_serializer = "json"
 accept_content = ["pickle", "json"]
 result_expires = 200
 result_persistent = False
-worker_send_task_events = False
+worker_send_task_events = True
 broker_connection_retry_on_startup = True
 worker_prefetch_multiplier = 4
 

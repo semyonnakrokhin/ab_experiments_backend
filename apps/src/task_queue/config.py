@@ -28,7 +28,7 @@ class BrokerSettings(BaseModel):
     def get_broker_url(self):
         url = (
             f"{self.transport}://"
-            + (u := "" if not self.user else f"{self.user}")
+            + (u := "" if not self.userid else f"{self.userid}")
             + (p := "" if not self.password else f":{self.password}")
             + ("" if not any([u, p]) else "@")
             + f"{self.hostname}"

@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import Enum
 
 from pydantic import BaseModel, ConfigDict
 from pytz import UTC
@@ -20,3 +21,30 @@ class CustomModel(BaseModel):
 
 class HTTPError(CustomModel):
     detail: str
+
+
+class ColorOptions(Enum):
+    RED = "#FF0000"
+    GREEN = "#00FF00"
+    BLUE = "#0000FF"
+
+
+class PriceOptions(Enum):
+    FIVE = 5
+    TEN = 10
+    TWENTY = 20
+    FIFTY = 50
+
+
+class ExperimentModel(CustomModel):
+    pass
+
+
+class ColorExperimentDto(ExperimentModel):
+    name: str = "button_color"
+    option: ColorOptions
+
+
+class PriceExperimentDto(ExperimentModel):
+    name: str = "price"
+    option: PriceOptions

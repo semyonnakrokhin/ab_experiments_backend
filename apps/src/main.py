@@ -6,7 +6,7 @@ from apps.src.api.router import router as router_api
 from apps.src.db_service.config import DatabaseSettings
 from apps.src.di_containers import AppContainer
 from apps.src.pages.router import router as router_pages
-from apps.src.task_queue.celery_setup import create_celery
+from apps.src.task_queue.celery_setup import celery_app
 from apps.src.utils import merge_dicts
 
 
@@ -27,12 +27,12 @@ def create_fastapi_app() -> FastAPI:
     app.include_router(router_api)
     app.include_router(router_pages)
 
+    app.celery = celery_app
+
     return app
 
 
 fastapi_app = create_fastapi_app()
-
-celery_app = create_celery(config_module="apps.src.task_queue.celeryconfig")
 
 
 if __name__ == "__main__":

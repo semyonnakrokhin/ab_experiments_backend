@@ -5,6 +5,7 @@ from dependency_injector import containers, providers
 from apps.logging_config import LOGGING_CONFIG
 from apps.src.database import DatabaseManager
 from apps.src.db_service.config import DatabaseSettings
+from apps.src.manager import ServiceManager
 from apps.src.utils import merge_dicts
 
 
@@ -23,12 +24,18 @@ class DatabaseContainer(containers.DeclarativeContainer):
     database_provider = providers.Singleton(DatabaseManager, db_url=config.dsn)
 
 
+class ServicesContainer(containers.DeclarativeContainer):
+    service_manager_provider = providers.Factory(ServiceManager)
+
+
 class AppContainer(containers.DeclarativeContainer):
     config = providers.Configuration()
 
     core = providers.Container(CoreContainer, config=config.logging)
 
     database = providers.Container(DatabaseContainer, config=config.database)
+
+    services = providers.Container(ServicesContainer)
 
 
 if __name__ == "__main__":
