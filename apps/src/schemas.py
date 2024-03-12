@@ -48,3 +48,9 @@ class ColorExperimentDto(ExperimentModel):
 class PriceExperimentDto(ExperimentModel):
     name: str = "price"
     option: PriceOptions
+
+
+class ExperimentsDto(CustomModel):
+    device_token: str
+    button_color: ColorOptions
+    price: PriceOptions

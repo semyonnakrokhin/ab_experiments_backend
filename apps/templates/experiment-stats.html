@@ -3,26 +3,37 @@
 {% block content %}
 <div class="container">
     <h1 class="mt-5">Статистика экспериментов</h1>
-    <table class="table mt-3">
-        <thead>
+    <table class="table mt-3 table-bordered table-auto">
+        <thead class="thead-dark">
             <tr>
-                <th scope="col">Название эксперимента</th>
-                <th scope="col">Общее количество участвующих устройств</th>
-                <th scope="col">Распределение между опциями</th>
+                <th rowspan="2" class="text-center align-middle">Название эксперимента</th>
+                <th rowspan="2" class="text-center align-middle">Общее количество участвующих устройств</th>
+                <th colspan="3" class="text-center">Распределение между опциями</th>
+            </tr>
+            <tr>
+                <th class="text-center">Значение опции</th>
+                <th class="text-center">Количество устройств абсолютное</th>
+                <th class="text-center">Количество устройств относительное, %</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>Эксперимент 1</td>
-                <td>100</td>
-                <td>Опция 1: 30%, Опция 2: 40%, Опция 3: 30%</td>
+                <td rowspan="3" class="text-center align-middle">button_color</td>
+                <td rowspan="3" class="text-center align-middle">20</td>
+                <td class="text-center">#FF0000</td>
+                <td class="text-center">7</td>
+                <td class="text-center">35%</td>
             </tr>
             <tr>
-                <td>Эксперимент 2</td>
-                <td>150</td>
-                <td>Опция 1: 50%, Опция 2: 25%, Опция 3: 25%</td>
+                <td class="text-center">#00FF00</td>
+                <td class="text-center">7</td>
+                <td class="text-center">35%</td>
             </tr>
-            <!-- Добавьте дополнительные строки, если нужно -->
+            <tr>
+                <td class="text-center">#0000FF</td>
+                <td class="text-center">6</td>
+                <td class="text-center">30%</td>
+            </tr>
         </tbody>
     </table>
 </div>
