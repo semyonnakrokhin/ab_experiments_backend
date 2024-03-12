@@ -18,3 +18,8 @@ class InvalidParamsError(RepositoryError):
 # Mappers Errors
 class MappingError(Exception):
     pass
+
+
+# Services Error
+class DatabaseServiceError(Exception):
+    pass

@@ -16,7 +16,7 @@ from apps.src.db_service.exceptions import (
 )
 from apps.src.schemas import ExperimentsDto
 
-logger = logging.getLogger("app.db_service.repositories")
+logger = logging.getLogger("fastapi_app.db_service.repositories")
 
 
 class OrmAlchemyRepository(AbstractDatabaseRepository, Generic[E, D]):

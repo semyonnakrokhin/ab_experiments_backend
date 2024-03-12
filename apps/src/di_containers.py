@@ -7,6 +7,7 @@ from apps.src.database import DatabaseManager
 from apps.src.db_service.config import DatabaseSettings
 from apps.src.db_service.mappers import ExperimentsMapper
 from apps.src.db_service.repositories import ExperimentRepository
+from apps.src.db_service.services import DatabaseService
 from apps.src.manager import ServiceManager
 from apps.src.utils import merge_dicts
 
@@ -39,6 +40,16 @@ class RepositoryContainer(containers.DeclarativeContainer):
 
 
 class ServicesContainer(containers.DeclarativeContainer):
+    repositories = providers.DependenciesContainer()
+
+    database = providers.DependenciesContainer()
+
+    database_service_provider = providers.Factory(
+        DatabaseService,
+        repository=repositories.experiment_repository_provider,
+        async_session_factory=database.database_provider.provided.get_session_factory,
+    )
+
     service_manager_provider = providers.Factory(ServiceManager)
 
 
@@ -53,7 +64,9 @@ class AppContainer(containers.DeclarativeContainer):
 
     repositories = providers.Container(RepositoryContainer, mappers=mappers)
 
-    services = providers.Container(ServicesContainer)
+    services = providers.Container(
+        ServicesContainer, repositories=repositories, database=database
+    )
 
 
 if __name__ == "__main__":
