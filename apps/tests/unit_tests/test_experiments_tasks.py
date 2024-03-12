@@ -6,8 +6,11 @@ import pytest
 @pytest.mark.usefixtures("conduct_experiments")
 @pytest.mark.usefixtures("celery_session_app")
 @pytest.mark.usefixtures("celery_session_worker")
+@pytest.mark.usefixtures("insert_data_to_database")
 class TestExperiments:
-    def test_color_experiment_order(self, conduct_experiments: Callable):
+    def test_color_experiment_order(
+        self, conduct_experiments: Callable, celery_app, celery_worker
+    ):
         colors_distribution = {"#FF0000": 0, "#00FF00": 0, "#0000FF": 0}
 
         for _ in range(9):

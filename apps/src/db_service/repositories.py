@@ -71,6 +71,11 @@ class OrmAlchemyRepository(AbstractDatabaseRepository, Generic[E, D]):
     async def select_some_by_params(self, params: Dict[str, Any]) -> List[D]:
         self._validate_session_is_set()
 
+        if type(params) != dict:
+            error_message = "Type of params should be dict"
+            logger.error(error_message)
+            raise TypeError(error_message)
+
         model_fields = set(self.model.__table__.columns.keys())
         params_keys = set(params.keys())
 
@@ -97,14 +102,6 @@ class OrmAlchemyRepository(AbstractDatabaseRepository, Generic[E, D]):
 
 class ExperimentRepository(OrmAlchemyRepository[ExperimentOrmModel, ExperimentsDto]):
     model = ExperimentOrmModel
-
-    def __init__(
-        self,
-        mapper: AbstractDomainEntityMapper,
-        page_mapper: AbstractDomainEntityMapper = None,
-    ):
-        super().__init__(mapper=mapper)
-        self._page_mapper = page_mapper
 
     async def select_aggregated(self):
         self._validate_session_is_set()
