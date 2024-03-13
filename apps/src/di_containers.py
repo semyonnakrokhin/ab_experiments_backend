@@ -50,7 +50,9 @@ class ServicesContainer(containers.DeclarativeContainer):
         async_session_factory=database.database_provider.provided.get_session_factory,
     )
 
-    service_manager_provider = providers.Factory(ServiceManager)
+    service_manager_provider = providers.Factory(
+        ServiceManager, database_service=database_service_provider
+    )
 
 
 class AppContainer(containers.DeclarativeContainer):

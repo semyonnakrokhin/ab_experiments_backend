@@ -4,7 +4,7 @@
 <div class="container">
     <h1 class="mt-5">Статистика экспериментов</h1>
     <table class="table mt-3 table-bordered table-auto">
-        <thead class="thead-dark">
+        <thead style="background-color: #e9ecef; color: black;">
             <tr>
                 <th rowspan="2" class="text-center align-middle">Название эксперимента</th>
                 <th rowspan="2" class="text-center align-middle">Общее количество участвующих устройств</th>
@@ -17,23 +17,24 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td rowspan="3" class="text-center align-middle">button_color</td>
-                <td rowspan="3" class="text-center align-middle">20</td>
-                <td class="text-center">#FF0000</td>
-                <td class="text-center">7</td>
-                <td class="text-center">35%</td>
-            </tr>
-            <tr>
-                <td class="text-center">#00FF00</td>
-                <td class="text-center">7</td>
-                <td class="text-center">35%</td>
-            </tr>
-            <tr>
-                <td class="text-center">#0000FF</td>
-                <td class="text-center">6</td>
-                <td class="text-center">30%</td>
-            </tr>
+            {% for statistics in statistics_lst %}
+                {% set first_item = statistics.data[0] %}
+                <tr>
+                    <td rowspan="{{ statistics.data|length }}" class="text-center align-middle">{{ statistics.experiment_name }}</td>
+                    <td rowspan="{{ statistics.data|length }}" class="text-center align-middle">{{ first_item[2] }}</td>
+                    <td class="text-center">{{ first_item[0] }}</td>
+                    <td class="text-center">{{ first_item[1] }}</td>
+                    <td class="text-center">{{ first_item[3] }}%</td>
+                </tr>
+
+                {% for item in statistics.data[1:] %}
+                    <tr>
+                        <td class="text-center">{{ item[0] }}</td>
+                        <td class="text-center">{{ item[1] }}</td>
+                        <td class="text-center">{{ item[3] }}%</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
         </tbody>
     </table>
 </div>
