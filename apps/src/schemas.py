@@ -36,20 +36,6 @@ class PriceOptions(Enum):
     FIFTY = 50
 
 
-class ExperimentModel(CustomModel):
-    pass
-
-
-class ColorExperimentDto(ExperimentModel):
-    name: str = "button_color"
-    option: ColorOptions
-
-
-class PriceExperimentDto(ExperimentModel):
-    name: str = "price"
-    option: PriceOptions
-
-
 class ExperimentsDto(CustomModel):
     device_token: str
     button_color: ColorOptions
