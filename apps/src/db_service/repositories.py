@@ -14,7 +14,7 @@ from apps.src.db_service.exceptions import (
     InvalidParamsError,
     SessionNotSetError,
 )
-from apps.src.schemas import ExperimentsDto
+from apps.src.schemas import ExperimentsDomain
 
 logger = logging.getLogger("fastapi_app.db_service.repositories")
 
@@ -100,7 +100,7 @@ class OrmAlchemyRepository(AbstractDatabaseRepository, Generic[E, D]):
         return [self._mapper.to_domain(entity_obj=entity) for entity in entity_list]
 
 
-class ExperimentRepository(OrmAlchemyRepository[ExperimentOrmModel, ExperimentsDto]):
+class ExperimentRepository(OrmAlchemyRepository[ExperimentOrmModel, ExperimentsDomain]):
     model = ExperimentOrmModel
 
     async def select_aggregated(self):

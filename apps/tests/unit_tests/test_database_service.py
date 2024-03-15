@@ -9,7 +9,7 @@ from apps.src.db_service.exceptions import (
     SessionNotSetError,
 )
 from apps.src.db_service.repositories import ExperimentRepository
-from apps.src.schemas import ColorOptions, ExperimentsDto, PriceOptions
+from apps.src.schemas import ColorOptions, ExperimentsDomain, PriceOptions
 from apps.src.utils import generate_device_token
 
 
@@ -19,12 +19,12 @@ class TestDatabaseServiceAdd:
         argnames="domain_input, expected_output, expectation",
         argvalues=[
             (
-                ExperimentsDto(
+                ExperimentsDomain(
                     device_token="02392c7d-fb6b-48a0-9edf-97edfcfdfadf",
                     button_color=ColorOptions.RED,
                     price=PriceOptions.TEN,
                 ),
-                ExperimentsDto(
+                ExperimentsDomain(
                     device_token="02392c7d-fb6b-48a0-9edf-97edfcfdfadf",
                     button_color=ColorOptions.RED,
                     price=PriceOptions.TEN,
@@ -61,7 +61,7 @@ class TestDatabaseServiceAdd:
         repository_mock = mock.Mock(spec=ExperimentRepository)
         repository_mock.insert_one.side_effect = error_type("Mocked error")
 
-        test_experiment = ExperimentsDto(
+        test_experiment = ExperimentsDomain(
             device_token=generate_device_token(),
             button_color=ColorOptions.RED,
             price=PriceOptions.TEN,
@@ -84,7 +84,7 @@ class TestDatabaseServiceGetByToken:
     async def test_get_experiments_success(
         self, container, device_token, expectation, database_test
     ):
-        test_experiment = ExperimentsDto(
+        test_experiment = ExperimentsDomain(
             device_token=device_token,
             button_color=ColorOptions.RED,
             price=PriceOptions.TEN,

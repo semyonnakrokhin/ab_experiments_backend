@@ -83,7 +83,7 @@ def celery_config():
     return {
         "broker_url": "memory://",
         "result_backend": "rpc://",
-        "task_always_eager": True,
+        # "task_always_eager": True,
     }
 
 
@@ -92,6 +92,6 @@ def celery_worker_parameters():
     return {"perform_ping_check": False, "worker_pool": "solo"}
 
 
-@pytest.fixture(scope="session")
-def celery_includes():
-    return ["apps.src.task_queue.tasks"]
+# @pytest.fixture(scope="session")
+# def celery_includes():
+#     return ["apps.src.task_queue.tasks"]

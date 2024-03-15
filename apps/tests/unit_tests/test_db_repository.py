@@ -8,7 +8,7 @@ from dependency_injector.containers import DeclarativeContainer
 from apps.src.database import DatabaseManager
 from apps.src.db_service.exceptions import InvalidParamsError, SessionNotSetError
 from apps.src.db_service.repositories import ExperimentRepository
-from apps.src.schemas import ColorOptions, ExperimentsDto, PriceOptions
+from apps.src.schemas import ColorOptions, ExperimentsDomain, PriceOptions
 from apps.src.utils import generate_device_token
 
 
@@ -18,7 +18,7 @@ class TestRepositoryInsertOne:
         argnames="domain_input, expectation",
         argvalues=[
             (
-                ExperimentsDto(
+                ExperimentsDomain(
                     device_token=generate_device_token(),
                     button_color=ColorOptions.RED,
                     price=PriceOptions.TEN,
@@ -29,7 +29,7 @@ class TestRepositoryInsertOne:
     )
     async def test_insert_one_success(
         self,
-        domain_input: ExperimentsDto,
+        domain_input: ExperimentsDomain,
         database_test: DatabaseManager,
         expectation: AbstractContextManager,
         container: DeclarativeContainer,
@@ -52,7 +52,7 @@ class TestRepositoryInsertOne:
         argnames="domain_input, expectation",
         argvalues=[
             (
-                ExperimentsDto(
+                ExperimentsDomain(
                     device_token=generate_device_token(),
                     button_color=ColorOptions.RED,
                     price=PriceOptions.TEN,
@@ -63,7 +63,7 @@ class TestRepositoryInsertOne:
     )
     async def test_insert_one_errors(
         self,
-        domain_input: ExperimentsDto,
+        domain_input: ExperimentsDomain,
         database_test: DatabaseManager,
         expectation: AbstractContextManager,
         container: DeclarativeContainer,
@@ -114,7 +114,7 @@ class TestSelectSomeByParams:
         except Exception:
             device_token = generate_device_token()
 
-        test_experiment = ExperimentsDto(
+        test_experiment = ExperimentsDomain(
             device_token=device_token,
             button_color=ColorOptions.RED,
             price=PriceOptions.TEN,

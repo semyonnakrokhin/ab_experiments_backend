@@ -4,6 +4,7 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.templating import Jinja2Templates
 
+from apps.src.db_service.exceptions import DatabaseError, SessionNotSetError
 from apps.src.di_containers import AppContainer
 from apps.src.manager import ServiceManager
 from apps.src.schemas import HTTPError
@@ -44,6 +45,10 @@ async def get_experiment_stats_handler(
             request=request,
             name="experiment-stats.html",
             context={"statistics_lst": statistics_lst},
+        )
+    except (DatabaseError, SessionNotSetError):
+        raise HTTPException(
+            status_code=500, detail="Error is on the database repository layer"
         )
     except Exception:
         raise HTTPException(status_code=500, detail="Error at the controller layer.")

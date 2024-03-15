@@ -3,13 +3,15 @@ import logging
 from apps.src.db_service.abstract_mappers import AbstractDomainEntityMapper
 from apps.src.db_service.entities import ExperimentOrmModel
 from apps.src.db_service.exceptions import MappingError
-from apps.src.schemas import ColorOptions, ExperimentsDto, PriceOptions
+from apps.src.schemas import ColorOptions, ExperimentsDomain, PriceOptions
 
 logger = logging.getLogger("app.db_service.mappers")
 
 
-class ExperimentsMapper(AbstractDomainEntityMapper[ExperimentsDto, ExperimentOrmModel]):
-    def to_entity(self, domain_obj: ExperimentsDto) -> ExperimentOrmModel:
+class ExperimentsMapper(
+    AbstractDomainEntityMapper[ExperimentsDomain, ExperimentOrmModel]
+):
+    def to_entity(self, domain_obj: ExperimentsDomain) -> ExperimentOrmModel:
         try:
             return ExperimentOrmModel(
                 device_token=domain_obj.device_token,
@@ -23,9 +25,9 @@ class ExperimentsMapper(AbstractDomainEntityMapper[ExperimentsDto, ExperimentOrm
             logger.error(error_message)
             raise MappingError(error_message)
 
-    def to_domain(self, entity_obj: ExperimentOrmModel) -> ExperimentsDto:
+    def to_domain(self, entity_obj: ExperimentOrmModel) -> ExperimentsDomain:
         try:
-            return ExperimentsDto(
+            return ExperimentsDomain(
                 device_token=entity_obj.device_token,
                 button_color=ColorOptions(entity_obj.button_color),
                 price=PriceOptions(entity_obj.price),

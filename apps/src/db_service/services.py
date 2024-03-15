@@ -10,7 +10,7 @@ from apps.src.db_service.exceptions import (
     SessionNotSetError,
 )
 from apps.src.db_service.repositories import ExperimentRepository
-from apps.src.schemas import ExperimentsDto
+from apps.src.schemas import ExperimentsDomain
 
 logger = logging.getLogger("fastapi_app.db_service.services")
 
@@ -24,7 +24,9 @@ class DatabaseService:
         self._repository = repository
         self._async_session_factory = async_session_factory
 
-    async def add_experiments(self, experiments: ExperimentsDto) -> ExperimentsDto:
+    async def add_experiments(
+        self, experiments: ExperimentsDomain
+    ) -> ExperimentsDomain:
         try:
             async with self._async_session_factory() as session:
                 self._repository.set_session(session)
@@ -48,7 +50,7 @@ class DatabaseService:
 
     async def get_experiments_by_device_token(
         self, device_token: str
-    ) -> Optional[ExperimentsDto]:
+    ) -> Optional[ExperimentsDomain]:
         try:
             async with self._async_session_factory() as session:
                 self._repository.set_session(session)

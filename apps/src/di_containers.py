@@ -9,6 +9,7 @@ from apps.src.db_service.mappers import ExperimentsMapper
 from apps.src.db_service.repositories import ExperimentRepository
 from apps.src.db_service.services import DatabaseService
 from apps.src.manager import ServiceManager
+from apps.src.mappers import ExperimentsDomainDtoMapper
 from apps.src.utils import merge_dicts
 
 
@@ -30,6 +31,10 @@ class DatabaseContainer(containers.DeclarativeContainer):
 class MapperContainer(containers.DeclarativeContainer):
     experiments_mapper_provider = providers.Factory(ExperimentsMapper)
 
+    experiments_domain_dto_mapper_provider = providers.Factory(
+        ExperimentsDomainDtoMapper
+    )
+
 
 class RepositoryContainer(containers.DeclarativeContainer):
     mappers = providers.DependenciesContainer()
@@ -44,6 +49,8 @@ class ServicesContainer(containers.DeclarativeContainer):
 
     database = providers.DependenciesContainer()
 
+    mappers = providers.DependenciesContainer()
+
     database_service_provider = providers.Factory(
         DatabaseService,
         repository=repositories.experiment_repository_provider,
@@ -51,7 +58,9 @@ class ServicesContainer(containers.DeclarativeContainer):
     )
 
     service_manager_provider = providers.Factory(
-        ServiceManager, database_service=database_service_provider
+        ServiceManager,
+        database_service=database_service_provider,
+        mapper=mappers.experiments_domain_dto_mapper_provider,
     )
 
 
@@ -67,7 +76,7 @@ class AppContainer(containers.DeclarativeContainer):
     repositories = providers.Container(RepositoryContainer, mappers=mappers)
 
     services = providers.Container(
-        ServicesContainer, repositories=repositories, database=database
+        ServicesContainer, repositories=repositories, database=database, mappers=mappers
     )
 
 

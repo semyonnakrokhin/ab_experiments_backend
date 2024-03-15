@@ -15,7 +15,7 @@ class TestExperiments:
 
         for _ in range(9):
             experiments = conduct_experiments()
-            color = experiments[0].option.value
+            color = experiments["button_color"]
             colors_distribution[color] += 1
 
         assert colors_distribution == {"#FF0000": 3, "#00FF00": 3, "#0000FF": 3}
@@ -25,7 +25,7 @@ class TestExperiments:
 
         for _ in range(20):
             experiments = conduct_experiments()
-            price = experiments[1].option.value
+            price = experiments["price"]
             prices_counts[price] += 1
 
         assert prices_counts == {5: 2, 10: 15, 20: 2, 50: 1}
