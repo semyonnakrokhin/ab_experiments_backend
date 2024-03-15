@@ -26,7 +26,7 @@ services:
     ports:
       - 5433:5432
     healthcheck:
-      test: [ "CMD", "pg_isready", "-q", "-d", "ab_exp_db", "-U", "ab_exp_user" ]
+      test: [ "CMD", "pg_isready", "-q", "-d", "ab_exp_test_db", "-U", "ab_exp_user" ]
     networks:
       - semyon-network
 
