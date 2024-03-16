@@ -82,7 +82,7 @@ def celery_config():
     # }
     return {
         "broker_url": "memory://",
-        "result_backend": "rpc://",
+        "result_backend": "redis://redis:6379/0",
         # "task_always_eager": True,
     }
 
