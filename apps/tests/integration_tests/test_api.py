@@ -4,6 +4,8 @@ from httpx import AsyncClient
 from apps.src.utils import generate_device_token
 
 
+@pytest.mark.usefixtures("celery_session_app")
+@pytest.mark.usefixtures("celery_session_worker")
 @pytest.mark.usefixtures("empty_database")
 class TestGetExperimentsEndpoint:
     _url = "/api/v1/experiments"

@@ -50,6 +50,31 @@ class ServiceManager:
 
         return payload
 
+    # @staticmethod
+    # def conduct_experiments():
+    #     c_task = color_experiment_task.s().set(queue="button")
+    #     p_task = price_experiment_task.s().set(queue="price")
+    #
+    #     c_res = c_task.apply_async()
+    #     p_res = p_task.apply_async()
+    #
+    #     try:
+    #         options_lst = [
+    #             c_res.get(propagate=True),
+    #             p_res.get(propagate=True)
+    #         ]
+    #     except Exception as e:
+    #         error_message = (
+    #             f"Failed to retrieve experiment results: {str(e)} "
+    #             f"due to connection to result backend fail"
+    #         )
+    #         logger.error(error_message)
+    #         raise ExperimentError(error_message)
+    #
+    #     payload = {"button_color": options_lst[0], "price": options_lst[1]}
+    #
+    #     return payload
+
     async def get_or_conduct_experiments(
         self, device_token: str
     ) -> List[ExperimentsDto]:
