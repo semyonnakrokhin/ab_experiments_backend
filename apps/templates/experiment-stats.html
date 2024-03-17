@@ -3,26 +3,38 @@
 {% block content %}
 <div class="container">
     <h1 class="mt-5">Статистика экспериментов</h1>
-    <table class="table mt-3">
-        <thead>
+    <table class="table mt-3 table-bordered table-auto">
+        <thead style="background-color: #e9ecef; color: black;">
             <tr>
-                <th scope="col">Название эксперимента</th>
-                <th scope="col">Общее количество участвующих устройств</th>
-                <th scope="col">Распределение между опциями</th>
+                <th rowspan="2" class="text-center align-middle">Название эксперимента</th>
+                <th rowspan="2" class="text-center align-middle">Общее количество участвующих устройств</th>
+                <th colspan="3" class="text-center">Распределение между опциями</th>
+            </tr>
+            <tr>
+                <th class="text-center">Значение опции</th>
+                <th class="text-center">Количество устройств абсолютное</th>
+                <th class="text-center">Количество устройств относительное, %</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Эксперимент 1</td>
-                <td>100</td>
-                <td>Опция 1: 30%, Опция 2: 40%, Опция 3: 30%</td>
-            </tr>
-            <tr>
-                <td>Эксперимент 2</td>
-                <td>150</td>
-                <td>Опция 1: 50%, Опция 2: 25%, Опция 3: 25%</td>
-            </tr>
-            <!-- Добавьте дополнительные строки, если нужно -->
+            {% for statistics in statistics_lst %}
+                {% set first_item = statistics.data[0] %}
+                <tr>
+                    <td rowspan="{{ statistics.data|length }}" class="text-center align-middle">{{ statistics.experiment_name }}</td>
+                    <td rowspan="{{ statistics.data|length }}" class="text-center align-middle">{{ first_item[2] }}</td>
+                    <td class="text-center">{{ first_item[0] }}</td>
+                    <td class="text-center">{{ first_item[1] }}</td>
+                    <td class="text-center">{{ first_item[3] }}%</td>
+                </tr>
+
+                {% for item in statistics.data[1:] %}
+                    <tr>
+                        <td class="text-center">{{ item[0] }}</td>
+                        <td class="text-center">{{ item[1] }}</td>
+                        <td class="text-center">{{ item[3] }}%</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
         </tbody>
     </table>
 </div>

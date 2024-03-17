@@ -1,8 +1,12 @@
 import os
 
-from fastapi import APIRouter, HTTPException, Request, status
+from dependency_injector.wiring import Provide, inject
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.templating import Jinja2Templates
 
+from apps.src.db_service.exceptions import DatabaseError, SessionNotSetError
+from apps.src.di_containers import AppContainer
+from apps.src.manager import ServiceManager
 from apps.src.schemas import HTTPError
 
 router = APIRouter(prefix="/pages", tags=["Pages"])
@@ -28,10 +32,23 @@ templates = Jinja2Templates(directory=os.path.join(_apps_dir, "templates"))
         },
     },
 )
-def get_experiment_stats_handler(request: Request):
+@inject
+async def get_experiment_stats_handler(
+    request: Request,
+    service_manager: ServiceManager = Depends(
+        Provide[AppContainer.services.service_manager_provider]
+    ),
+):
     try:
+        statistics_lst = await service_manager.get_statistics_for_web_page()
         return templates.TemplateResponse(
-            request=request, name="experiment-stats.html", context={"id": id}
+            request=request,
+            name="experiment-stats.html",
+            context={"statistics_lst": statistics_lst},
+        )
+    except (DatabaseError, SessionNotSetError):
+        raise HTTPException(
+            status_code=500, detail="Error is on the database repository layer"
         )
     except Exception:
         raise HTTPException(status_code=500, detail="Error at the controller layer.")

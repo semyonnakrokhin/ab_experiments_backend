@@ -1,6 +1,8 @@
+import pytest
 from httpx import AsyncClient
 
 
+@pytest.mark.usefixtures("insert_data_to_database")
 class TestGetExperimentStatsEndpoint:
     _url = "/pages/experiment-stats"
 

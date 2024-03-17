@@ -6,7 +6,11 @@ services:
     env_file:
       - ./apps/.env
       - ./apps/.env.test
-    depends_on: ["db"]
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     ports:
       - 8000:8000
     networks:
@@ -24,17 +28,22 @@ services:
     ports:
       - 5433:5432
     healthcheck:
-      test: [ "CMD", "pg_isready", "-q", "-d", "ab_exp_db", "-U", "ab_exp_user" ]
+      test: [ "CMD", "pg_isready", "-q", "-d", "ab_exp_test_db", "-U", "ab_exp_user" ]
     networks:
       - semyon-network
 
-#  cache:
-#    image: redis:6.2-alpine
-#    restart: always
-#    ports:
-#      - 6379:6379
-#    networks:
-#      - semyon-network
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+    ports:
+      - 6379:6379
+    networks:
+      - semyon-network
 
 networks:
   semyon-network:

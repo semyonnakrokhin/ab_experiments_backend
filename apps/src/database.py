@@ -30,19 +30,15 @@ class DatabaseManager:
     async def delete_and_create_database(self) -> None:
         """Firstly delete and then create database tables based on SQLAlchemy
         Base metadata."""
-        if not DatabaseManager._initialized:
-            async with self._async_engine.begin() as conn:
-                await conn.run_sync(Base.metadata.drop_all)
-                await conn.run_sync(Base.metadata.create_all)
-
-            DatabaseManager._initialized = True
+        async with self._async_engine.begin() as conn:
+            await conn.run_sync(Base.metadata.drop_all)
+            await conn.run_sync(Base.metadata.create_all)
 
     async def delete_data_from_tables(self) -> None:
-        if DatabaseManager._initialized:
-            async with self._async_session_factory() as session:
-                for table in reversed(Base.metadata.sorted_tables):
-                    await session.execute(table.delete())
-                await session.commit()
+        async with self._async_session_factory() as session:
+            for table in reversed(Base.metadata.sorted_tables):
+                await session.execute(table.delete())
+            await session.commit()
 
     @property
     def get_session_factory(self):
