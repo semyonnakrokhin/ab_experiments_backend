@@ -1,16 +1,29 @@
 version: '3.8'
 
 services:
-#  nginx:
-#    build: ./nginx
-#    ports:
-#      - 1337:80
-#    depends_on:
-#      - fastapi_app
-#    networks:
-#      - semyon-network
-
-
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    depends_on:
+      worker-button:
+        condition: service_started
+      worker-price:
+        condition: service_started
+      fastapi_app:
+        condition: service_started
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+        restart: true
+      redis:
+        condition: service_healthy
+        restart: true
+      redis-commander:
+        condition: service_healthy
+    networks:
+      - semyon-network
 
   worker-button:
     build: ./apps
@@ -80,8 +93,8 @@ services:
       - sh
       - -c
       - |
+        alembic -c /my_project/apps/alembic.ini upgrade head
         uvicorn apps.src.main:fastapi_app --host 0.0.0.0 --port 8000
-  #        alembic -c /my_project/apps/alembic.ini upgrade head
 
   redis-commander:
     container_name: redis-commander
