@@ -42,11 +42,11 @@ RUN python -m pip install --upgrade pip && pip install -r requirements.txt
 
 
 COPY ./logs/ ./logs/
-# COPY ./migrations/ ./migrations/
+COPY ./migrations/ ./migrations/
 COPY ./src/ ./src/
 COPY ./tests/ ./tests/
 COPY ./templates/ ./templates/
-# COPY ./alembic.ini ./alembic.ini
+COPY ./alembic.ini ./alembic.ini
 COPY ./logging_config.py ./logging_config.py
 
 
