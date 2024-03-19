@@ -18,22 +18,24 @@
         </thead>
         <tbody>
             {% for statistics in statistics_lst %}
-                {% set first_item = statistics.data[0] %}
-                <tr>
-                    <td rowspan="{{ statistics.data|length }}" class="text-center align-middle">{{ statistics.experiment_name }}</td>
-                    <td rowspan="{{ statistics.data|length }}" class="text-center align-middle">{{ first_item[2] }}</td>
-                    <td class="text-center">{{ first_item[0] }}</td>
-                    <td class="text-center">{{ first_item[1] }}</td>
-                    <td class="text-center">{{ first_item[3] }}%</td>
-                </tr>
-
-                {% for item in statistics.data[1:] %}
+                {% if statistics.data %}
+                    {% set first_item = statistics.data[0] %}
                     <tr>
-                        <td class="text-center">{{ item[0] }}</td>
-                        <td class="text-center">{{ item[1] }}</td>
-                        <td class="text-center">{{ item[3] }}%</td>
+                        <td rowspan="{{ statistics.data|length }}" class="text-center align-middle">{{ statistics.experiment_name }}</td>
+                        <td rowspan="{{ statistics.data|length }}" class="text-center align-middle">{{ first_item[2] }}</td>
+                        <td class="text-center">{{ first_item[0] }}</td>
+                        <td class="text-center">{{ first_item[1] }}</td>
+                        <td class="text-center">{{ first_item[3] }}%</td>
                     </tr>
-                {% endfor %}
+
+                    {% for item in statistics.data[1:] %}
+                        <tr>
+                            <td class="text-center">{{ item[0] }}</td>
+                            <td class="text-center">{{ item[1] }}</td>
+                            <td class="text-center">{{ item[3] }}%</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
             {% endfor %}
         </tbody>
     </table>
